@@ -26,5 +26,12 @@ print("Unit Name:",
 
 if sim800l.is_registered():
     print("SIM is registered.")
+
+    while True:
+	message = sim800l.check_incoming()
+     if message:
+        print("Nova mensagem recebida:", message)
+     time.sleep(1)
 else:
     print("SIM NOT registered.")
+    sim800l.hard_reset(23)
