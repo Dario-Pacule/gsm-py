@@ -1,11 +1,11 @@
 from sim800l import SIM800L
 import time
-from checkHex import is_hex
 
 sim800l = SIM800L('/dev/serial0')
 
 sim800l.setup()
 
+"""
 print("Date:",
     sim800l.get_date())
 print("Operator:",
@@ -26,6 +26,7 @@ print("ICCID:",
     sim800l.get_ccid())
 print("Unit Name:",
     sim800l.get_unit_name())
+"""
 
 if sim800l.is_registered():
     print("SIM is registered.")
@@ -34,9 +35,7 @@ if sim800l.is_registered():
       if result[0] == 'CMTI':
        index = result[1]
        msg = sim800l.read_and_delete_all(index_id=1)
-       #message = msg[3].strip('\n')
        print("Nova mensagem recebida:", msg)
-       print("Nova mensagem recebida:", type(msg))
       time.sleep(1)
 else:
     print("SIM NOT registered.")
