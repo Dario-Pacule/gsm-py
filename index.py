@@ -1,0 +1,30 @@
+from sim800l import SIM800L
+sim800l = SIM800L('/dev/serial0')
+
+sim800l.setup()
+
+print("Date:",
+    sim800l.get_date())
+print("Operator:",
+    sim800l.get_operator())
+print("Service provider:",
+    sim800l.get_service_provider())
+print("Signal strength:",
+    sim800l.get_signal_strength(), "%")
+print("Temperature:",
+    sim800l.get_temperature(), "degrees")
+print("MSISDN:",
+    sim800l.get_msisdn())
+print("Battery Voltage:",
+    sim800l.get_battery_voltage(), "V")
+print("IMSI:",
+    sim800l.get_imsi())
+print("ICCID:",
+    sim800l.get_ccid())
+print("Unit Name:",
+    sim800l.get_unit_name())
+
+if sim800l.is_registered():
+    print("SIM is registered.")
+else:
+    print("SIM NOT registered.")
