@@ -1,5 +1,6 @@
 from sim800l import SIM800L
 import time
+from checkHex import is_hex
 
 sim800l = SIM800L('/dev/serial0')
 
@@ -34,8 +35,10 @@ if sim800l.is_registered():
        index = result[1]
        message = sim800l.read_sms(index)
        print("Nova mensagem recebida:", message)
-       message_str = bytes.fromhex(message).decode('utf-16-be')
-       print("STR: ",message_str)
+
+       if is_hex(message):
+        message_str = bytes.fromhex(message).decode('utf-16-be')
+        print("Mensagem decodificada:", message_str)
       time.sleep(1)
 else:
     print("SIM NOT registered.")
