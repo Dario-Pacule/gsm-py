@@ -36,6 +36,8 @@ if sim800l.is_registered():
        index = result[1]
        msg = sim800l.read_and_delete_all(index_id=1)
        print("Nova mensagem recebida:", msg)
+       print("Nova mensagem recebida:", msg[0])
+       print("Nova mensagem recebida:", msg[3])
       time.sleep(1)
 else:
     print("SIM NOT registered.")
