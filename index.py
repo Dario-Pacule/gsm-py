@@ -33,12 +33,10 @@ if sim800l.is_registered():
       result = sim800l.check_incoming()
       if result[0] == 'CMTI':
        index = result[1]
-       message = sim800l.read_sms(index)
-       print("Nova mensagem recebida:", message)
-
-       if is_hex(message):
-        message_str = bytes.fromhex(message).decode('utf-16-be')
-        print("Mensagem decodificada:", message_str)
+       msg = sim800l.read_and_delete_all(index_id=1)
+       #message = msg[3].strip('\n')
+       print("Nova mensagem recebida:", msg)
+       print("Nova mensagem recebida:", type(msg))
       time.sleep(1)
 else:
     print("SIM NOT registered.")
