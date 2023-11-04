@@ -1,4 +1,6 @@
 from sim800l import SIM800L
+import time
+
 sim800l = SIM800L('/dev/serial0')
 
 sim800l.setup()
@@ -27,9 +29,13 @@ print("Unit Name:",
 if sim800l.is_registered():
     print("SIM is registered.")
     while True:
-      message = sim800l.check_incoming()
-      if message:
+      result = sim800l.check_incoming()
+      if result[0] == 'CMTI':
+       index = result[1]
+       message = sim800l.read_sms(index)
        print("Nova mensagem recebida:", message)
+       message_str = bytes.fromhex(message).decode('utf-16-be')
+       print("STR: ",message_str)
       time.sleep(1)
 else:
     print("SIM NOT registered.")
