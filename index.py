@@ -14,7 +14,7 @@ if sim800l.is_registered():
        index = result[1]
        msg = sim800l.read_and_delete_all(index_id=1)
        phoneNumber = msg[0]
-       messageContent =  msg[3]
+       messageContent =  msg[3].replace('\n', '')
        print("Nova mensagem recebida:", msg)
        print("Phone number: ",phoneNumber)
        print("messageContent: ",messageContent)
