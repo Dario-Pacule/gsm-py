@@ -1,6 +1,6 @@
-#from sim800l import SIM800L
-#import time
-#from apiRequest import *
+from sim800l import SIM800L
+import time
+from apiRequest import *
 from flask import Flask, jsonify, request
 
 app = Flask(__name__)
@@ -15,7 +15,6 @@ def remotSendSMS():
     res = { "message": "success" }
     return jsonify(res)
 
-"""
 sim800l = SIM800L('/dev/serial0')
 
 sim800l.setup()
@@ -37,4 +36,3 @@ if sim800l.is_registered():
 else:
     print("SIM NOT registered.")
     sim800l.hard_reset(23)
-"""
