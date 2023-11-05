@@ -12,6 +12,6 @@ def post(phone,message):
 
   if response.status_code == 200:
     # A requisição foi bem-sucedida
-    print("Sucesso: ",response)  # Exibe o conteúdo da resposta
+    print("Sucesso: ",response.json())  # Exibe o conteúdo da resposta
   else:
-    print(f'A requisição falhou com o código de status {response}')
+    print(f'A requisição falhou com o código de status {response.json()}')
