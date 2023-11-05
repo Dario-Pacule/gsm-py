@@ -11,10 +11,9 @@ def post(phone, message):
         'Content-Type': 'application/json'
     }
 
-    response = requests.post(url, json=data, headers=headers)  # Use json=data para enviar os dados como JSON
+    response = requests.post(url, json=data, headers=headers) 
 
     if response.status_code == 200:
-        # A requisição foi bem-sucedida
         print("Sucesso: ", response.json())
     else:
         print(f'A requisição falhou com o código de status {response.json()}')
