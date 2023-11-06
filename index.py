@@ -60,14 +60,14 @@ def message_check_loop():
                 messages = message_pattern.findall(result)
                 
                 for message_info in messages:
-                    index_id, status, sender, date, time = message_info
+                    index_id, status, sender, date, messageTime = message_info
                     message_content = sim800l.read_sms(index_id)  # Adicione esta linha
                     if message_content:
                         print(f"Index: {index_id}")
                         print(f"Status: {status.strip()}")
                         print(f"Sender: {sender.strip()}")
                         print(f"Date: {date.strip()}")
-                        print(f"Time: {time.strip()}")
+                        print(f"Time: {messageTime.strip()}")
                         print(f"Message: {message_content.strip()}")  # Modificado para mostrar o conteúdo da mensagem
                         print("-------------------------")
                 else:
