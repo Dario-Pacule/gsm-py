@@ -1,5 +1,6 @@
 from sim800l import SIM800L
 import time
+import re
 from apiRequest import *
 from flask import Flask, jsonify, request
 import threading
@@ -55,7 +56,7 @@ def message_check_loop():
 
             if result:
                 # Use uma expressão regular para identificar as mensagens
-                message_pattern = result.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
+                message_pattern = re.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
                 messages = message_pattern.findall(result)
                 
                 for message_info in messages:
