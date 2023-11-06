@@ -59,7 +59,7 @@ def message_check_loop():
                 message_pattern = re.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
                 messages = message_pattern.findall(result)
                 print("Message: ", messages)
-                for message_info in messages:
+                for message_info in messages[0]:
                     index_id, status, sender, date, messageTime = message_info
                     message_content = sim800l.read_sms(index_id)  # Adicione esta linha
                     sim800l.check_incoming()
