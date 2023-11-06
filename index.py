@@ -57,8 +57,9 @@ def message_check_loop():
                 messages = result.split('+CMGL:')
                 print("RESULT: ", result)
                 print("SPLIT RESULT: ", result.split('+CMGL:'))
-                print("MESSAGE: ", messages)
                 for message_info in messages:
+                    print("MESSAGE_INFO: ", message_info)
+                    print("MESSAGE_INFO.strip(): ", message_info.strip())
                     if message_info.strip():
                         index_id = message_info.split(',')[0].strip()
                         message = sim800l.read_sms(index_id)
