@@ -48,28 +48,28 @@ def send_sms_worker():
 def message_check_loop():
     if sim800l.is_registered():
         print("SIM is registered.")
-    while True:
-        # Lista todas as mensagens disponíveis
-        result = sim800l.command('AT+CMGL="ALL"\n')
-        sim800l.check_incoming()
+        while True:
+            # Lista todas as mensagens disponíveis
+            result = sim800l.command('AT+CMGL="ALL"\n')
+            sim800l.check_incoming()
 
-        if result:
-            messages = result.split('+CMGL:')
-            for message_info in messages:
-                if message_info.strip():
-                    index_id = message_info.split(',')[0].strip()
-                    message = sim800l.read_sms(index_id)
-                    if message:
-                        print(f"Index: {index_id}")
-                        print(f"Number: {message[0]}")
-                        print(f"Date: {message[1]}")
-                        print(f"Time: {message[2]}")
-                        print(f"Message: {message[3]}")
-                        print("-------------------------")
-        else:
-            print("Nenhuma menssagem encontrada")
-        
-        time.sleep(5)
+            if result:
+                messages = result.split('+CMGL:')
+                for message_info in messages:
+                    if message_info.strip():
+                        index_id = message_info.split(',')[0].strip()
+                        message = sim800l.read_sms(index_id)
+                        if message:
+                            print(f"Index: {index_id}")
+                            print(f"Number: {message[0]}")
+                            print(f"Date: {message[1]}")
+                            print(f"Time: {message[2]}")
+                            print(f"Message: {message[3]}")
+                            print("-------------------------")
+            else:
+                print("Nenhuma menssagem encontrada")
+            
+            time.sleep(5)
 
 
         """while True:
