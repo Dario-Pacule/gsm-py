@@ -58,10 +58,11 @@ def message_check_loop():
                 # Use uma expressão regular para identificar as mensagens
                 message_pattern = re.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
                 messages = message_pattern.findall(result)
-                
+                print("Message: ", messages)
                 for message_info in messages:
                     index_id, status, sender, date, messageTime = message_info
                     message_content = sim800l.read_sms(index_id)  # Adicione esta linha
+                    sim800l.check_incoming()
                     if message_content:
                         print(f"Index: {index_id}")
                         print(f"Status: {status.strip()}")
@@ -70,8 +71,8 @@ def message_check_loop():
                         print(f"Time: {messageTime.strip()}")
                         print(f"Message: {message_content.strip()}")  # Modificado para mostrar o conteúdo da mensagem
                         print("-------------------------")
-                else:
-                    print("Mensagem não lida")
+                    else:
+                        print("Mensagem não lida")
             
             time.sleep(5)
 
