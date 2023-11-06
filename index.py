@@ -3,6 +3,7 @@ import time
 from apiRequest import *
 from flask import Flask, jsonify, request
 import threading
+from removeAccents import replace_special_characters
 from queue import Queue
 
 app = Flask(__name__)
@@ -35,8 +36,9 @@ def send_sms_worker():
     while True:
         phoneNumber, message = message_queue.get()
         try:
-            sim800l.send_sms(phoneNumber, message)
-            print(f"SMS sent to {phoneNumber} with message: {message}")
+            cleanMessage = replace_special_characters(message)
+            sim800l.send_sms(phoneNumber, cleanMessage)
+            print(f"SMS sent to {phoneNumber} with message: {cleanMessage}")
         except Exception as e:
             print(f"Failed to send SMS to {phoneNumber}. Error: {str(e)}")
         finally:
