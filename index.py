@@ -3,10 +3,13 @@ import time
 from apiRequest import *
 from flask import Flask, jsonify, request
 import threading
+from queue import Queue
 
 app = Flask(__name__)
 sim800l = SIM800L('/dev/serial0')
 sim800l.setup()
+
+message_queue = Queue()
 
 @app.route('/send_sms', methods=['POST'])
 def send_sms():
@@ -21,22 +24,23 @@ def send_sms():
         return jsonify({"error": "Phone number and message are required."}), 400
 
     try:
-        # Enviar a mensagem SMS
-        time.sleep(2)
-        sim800l.send_sms(phoneNumber, message)
+        # Adicionar mensagem à fila para envio
+        message_queue.put((phoneNumber, message))
         return jsonify({"message": "SMS sent successfully."}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
 
-def send_long_sms(destno, long_msg):
-    max_msg_length = 120  # Tamanho máximo de uma mensagem SMS (para caracteres GSM 03.38)
-    segments = [long_msg[i:i + max_msg_length] for i in range(0, len(long_msg), max_msg_length)]
-
-    for i, segment in enumerate(segments):
-        part_identifier = f"Part {i + 1}/{len(segments)}"
-        full_msg = f"{segment} ({part_identifier})"
-        sim800l.send_sms(destno, full_msg)
+def send_sms_worker():
+    while True:
+        phoneNumber, message = message_queue.get()
+        try:
+            sim800l.send_sms(phoneNumber, message)
+            print(f"SMS sent to {phoneNumber} with message: {message}")
+        except Exception as e:
+            print(f"Failed to send SMS to {phoneNumber}. Error: {str(e)}")
+        finally:
+            message_queue.task_done()
 
 
 def message_check_loop():
@@ -58,7 +62,12 @@ def message_check_loop():
 
 if __name__ == '__main__':
     message_thread = threading.Thread(target=message_check_loop)
+    sms_thread = threading.Thread(target=send_sms_worker)
+
     message_thread.daemon = True
+    sms_thread.daemon = True
+    
     message_thread.start()
+    sms_thread.start()
 
     app.run(host='0.0.0.0', port=3001)
