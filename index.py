@@ -22,10 +22,21 @@ def send_sms():
 
     try:
         # Enviar a mensagem SMS
+        time.sleep(2)
         sim800l.send_sms(phoneNumber, message)
         return jsonify({"message": "SMS sent successfully."}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
+
+def send_long_sms(destno, long_msg):
+    max_msg_length = 120  # Tamanho máximo de uma mensagem SMS (para caracteres GSM 03.38)
+    segments = [long_msg[i:i + max_msg_length] for i in range(0, len(long_msg), max_msg_length)]
+
+    for i, segment in enumerate(segments):
+        part_identifier = f"Part {i + 1}/{len(segments)}"
+        full_msg = f"{segment} ({part_identifier})"
+        sim800l.send_sms(destno, full_msg)
 
 
 def message_check_loop():
@@ -40,7 +51,7 @@ def message_check_loop():
                 messageContent = msg[3].replace('\n', '')
                 print("New message:", msg)
                 post(phoneNumber, messageContent)
-            time.sleep(1)
+            time.sleep(5)
     else:
         print("SIM NOT registered.")
         sim800l.hard_reset(23)
