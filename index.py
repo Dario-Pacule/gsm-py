@@ -55,7 +55,7 @@ def message_check_loop():
 
             if result:
                 messages = result.split('+CMGL:')
-                print("MESSAGE: ", message)
+                print("MESSAGE: ", result)
                 for message_info in messages:
                     if message_info.strip():
                         index_id = message_info.split(',')[0].strip()
