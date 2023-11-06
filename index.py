@@ -49,15 +49,25 @@ def message_check_loop():
     if sim800l.is_registered():
         print("SIM is registered.")
         while True:
+            message = sim800l.read_next_message(all_msg=False)
+            if message is not None:
+                print("Mensagem lida:", message)
+            elif message is False:
+                print("Erro de leitura da mensagem: ",message)
+            else:
+                print("Nenhuma mensagem para ler: ", message)
+            time.sleep(1)
+            
+            """
             result = sim800l.check_incoming()
             if result[0] == 'CMTI':
                 index = result[1]
-                msg = sim800l.read_and_delete_all(index_id=index)
+                msg = sim800l.read_sms(index_id=index)
                 phoneNumber = msg[0]
                 messageContent = msg[3].replace('\n', '')
                 print("New message:", msg)
                 post(phoneNumber, messageContent)
-            time.sleep(5)
+            """
     else:
         print("SIM NOT registered.")
         sim800l.hard_reset(23)
