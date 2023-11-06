@@ -11,18 +11,18 @@ sim800l.setup()
 @app.route('/send_sms', methods=['POST'])
 def send_sms():
     data = request.get_json()
-    phone_number = data.get('phone_number')
+    phoneNumber = data.get('phoneNumber')
     message = data.get('message')
 
-    print("phone_number: ",phone_number)
+    print("phoneNumber: ",phoneNumber)
     print("message: ",message)
 
-    if not phone_number or not message:
+    if not phoneNumber or not message:
         return jsonify({"error": "Phone number and message are required."}), 400
 
     try:
         # Enviar a mensagem SMS
-        sim800l.send_sms(phone_number, message)
+        sim800l.send_sms(phoneNumber, message)
         return jsonify({"message": "SMS sent successfully."}), 200
     except Exception as e:
         return jsonify({"error": str(e)}), 500
