@@ -54,24 +54,23 @@ def message_check_loop():
             sim800l.check_incoming()
 
             if result:
-                messages = result.split('+CMGL:')
-                print("RESULT: ", result)
-                print("SPLIT RESULT: ", result.split('+CMGL:'))
+                # Use uma expressão regular para identificar as mensagens
+                message_pattern = result.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
+                messages = message_pattern.findall(result)
+                
                 for message_info in messages:
-                    print("MESSAGE_INFO: ", message_info)
-                    print("MESSAGE_INFO.strip(): ", message_info.strip())
-                    if message_info.strip():
-                        index_id = message_info.split(',')[0].strip()
-                        message = sim800l.read_sms(index_id)
-                        if message:
-                            print(f"Index: {index_id}")
-                            print(f"Number: {message[0]}")
-                            print(f"Date: {message[1]}")
-                            print(f"Time: {message[2]}")
-                            print(f"Message: {message[3]}")
-                            print("-------------------------")
-            else:
-                print("Nenhuma menssagem encontrada")
+                    index_id, status, sender, date, time = message_info
+                    message_content = sim800l.read_sms(index_id)  # Adicione esta linha
+                    if message_content:
+                        print(f"Index: {index_id}")
+                        print(f"Status: {status.strip()}")
+                        print(f"Sender: {sender.strip()}")
+                        print(f"Date: {date.strip()}")
+                        print(f"Time: {time.strip()}")
+                        print(f"Message: {message_content.strip()}")  # Modificado para mostrar o conteúdo da mensagem
+                        print("-------------------------")
+                else:
+                    print("Mensagem não lida")
             
             time.sleep(5)
 
