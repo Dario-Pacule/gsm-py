@@ -47,18 +47,21 @@ def send_sms_worker():
 
 
 def message_check_loop():
-    if sim800l.is_registered():
-        print("SIM is registered.")
-        # Lista todas as mensagens disponíveis
-        index_id = 1
+    index_id = 0
+    while True:
+    # Lista todas as mensagens disponíveis
+        index_id += 1
         result = sim800l.read_sms(index_id)
         sim800l.check_incoming()
+
+        print("INDICE: ", index_id)
 
         if result:
             print("Message: ", result)
         else:
             print("Nenhuma menssagem encontrada: ", result)
-            
+            break
+
         time.sleep(5)
 
 
@@ -82,9 +85,12 @@ def message_check_loop():
                 print("New message:", msg)
                 post(phoneNumber, messageContent)
             """
-    else:
-        print("SIM NOT registered.")
-        sim800l.hard_reset(23)
+        
+if sim800l.is_registered():
+    print("SIM is registered.")
+else:
+    print("SIM NOT registered.")
+    sim800l.hard_reset(23)
 
 if __name__ == '__main__':
     message_thread = threading.Thread(target=message_check_loop)
