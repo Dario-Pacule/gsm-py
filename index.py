@@ -1,6 +1,5 @@
 from sim800l import SIM800L
-import time
-import re
+from isValidPhoneNumber import isValidMZPhoneNumber
 from apiRequest import *
 from flask import Flask, jsonify, request
 import threading
@@ -49,42 +48,21 @@ def send_sms_worker():
 def message_check_loop():
     index_id = 0
     while True:
-    # Lista todas as mensagens disponíveis
         index_id += 1
-        result = sim800l.read_sms(index_id)
+        msg = sim800l.read_sms(index_id)
         sim800l.check_incoming()
 
-        print("INDICE: ", index_id)
+        if msg:
+            print("Message: ", msg)
+            phoneNumber = msg[0]
+            messageContent = msg[3].replace('\n', '')
+            if(isValidMZPhoneNumber(phoneNumber)): post(phoneNumber, messageContent)
 
-        if result:
-            print("Message: ", result)
+            sim800l.delete_sms(index_id)
+            sim800l.check_incoming()
         else:
-            print("Nenhuma menssagem encontrada: ", result)
-            break
-
-        #time.sleep(5)
-
-
-        """while True:
-            message = sim800l.read_next_message(all_msg=False)
-            if message is not None:
-                print("Mensagem lida:", message)
-            elif message is False:
-                print("Erro de leitura da mensagem: ",message)
-            else:
-                print("Nenhuma mensagem para ler: ", message)
-            time.sleep(1)
-            
-            
-            result = sim800l.check_incoming()
-            if result[0] == 'CMTI':
-                index = result[1]
-                msg = sim800l.read_sms(index_id=index)
-                phoneNumber = msg[0]
-                messageContent = msg[3].replace('\n', '')
-                print("New message:", msg)
-                post(phoneNumber, messageContent)
-            """
+            print("Nenhuma menssagem encontrada: ", msg)
+            index_id = 0
         
 if sim800l.is_registered():
     print("SIM is registered.")
