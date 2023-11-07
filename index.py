@@ -62,7 +62,7 @@ def message_check_loop():
             print("Nenhuma menssagem encontrada: ", result)
             break
 
-        time.sleep(5)
+        #time.sleep(5)
 
 
         """while True:
