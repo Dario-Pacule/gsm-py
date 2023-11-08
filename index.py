@@ -46,10 +46,11 @@ def send_sms_worker():
 
 
 def message_check_loop():
-    msg = sim800l.read_next_message(all_msg=True)
-    sim800l.check_incoming()
+    while True:
+        msg = sim800l.read_next_message(all_msg=True)
+        sim800l.check_incoming()
 
-    print("MESSAGE: ", msg)
+        print("MESSAGE: ", msg)
     """
     index_id = 0
     while True:
