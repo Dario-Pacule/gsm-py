@@ -46,15 +46,10 @@ def send_sms_worker():
 
 
 def message_check_loop():
-    while True:
-        msg = sim800l.read_next_message(all_msg=True)
-        sim800l.check_incoming()
-
-        print("MESSAGE: ", msg)
-    """
     index_id = 0
     while True:
         index_id += 1
+        print("INDEX: ", index_id)
         msg = sim800l.read_sms(index_id)
         sim800l.check_incoming()
 
@@ -68,8 +63,7 @@ def message_check_loop():
             sim800l.check_incoming()
         else:
             print("Nenhuma menssagem encontrada: ", msg)
-            index_id = 0
-    """
+            # index_id = 0
         
 if sim800l.is_registered():
     print("SIM is registered.")
