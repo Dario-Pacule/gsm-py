@@ -63,7 +63,7 @@ def message_check_loop():
             sim800l.check_incoming()
         else:
             print("Nenhuma menssagem encontrada: ", msg)
-            # index_id = 0
+            if(index_id>4): index_id = 0
        
 if sim800l.is_registered():
     print("SIM is registered.")
