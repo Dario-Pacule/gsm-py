@@ -59,9 +59,7 @@ def message_check_loop():
         print("MESSAGE: ",message[0][0])
 
         index_id = message[0][0]
-
-        msg = sim800l.read_sms(index_id)
-        print("MSG: ", msg)
+        sim800l.delete_sms(index_id)
 
         print("=============================")
         time.sleep(1)
