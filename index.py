@@ -3,6 +3,7 @@ from isValidPhoneNumber import isValidMZPhoneNumber
 from apiRequest import *
 from flask import Flask, jsonify, request
 import threading
+import time
 from removeAccents import replace_special_characters
 from queue import Queue
 
@@ -51,6 +52,8 @@ def message_check_loop():
         result = sim800l.command('AT+CMGL="ALL"\n')
         sim800l.check_incoming()
         print("RESULT: ",result)
+        print("=============================")
+        time.sleep(1)
     """
     index_id = 0
         index_id += 1
