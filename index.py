@@ -67,7 +67,8 @@ def message_check_loop():
                     sim800l.check_incoming()
                 else:
                     print("Nenhuma mensagem encontrada: ", msg)
-                    if index_id > 4:
+                    time.sleep(2)
+                    if index_id > 2:
                         index_id = 0
             except IndexError as e:
                 print(f"Erro ao acessar a mensagem: {e}")
