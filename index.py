@@ -61,8 +61,6 @@ def message_check_loop():
         index_id = message[0][0]
 
         msg = sim800l.read_sms(index_id)
-        sim800l.check_incoming()
-
         print("MSG: ", msg)
 
         print("=============================")
