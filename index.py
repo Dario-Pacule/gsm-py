@@ -54,7 +54,6 @@ def message_check_loop():
             index_id += 1
             try:
                 msg = sim800l.read_sms(index_id)
-                sim800l.check_incoming()
 
                 if msg:
                     print("Message: ", msg)
@@ -64,7 +63,6 @@ def message_check_loop():
                         post(phoneNumber, messageContent)
 
                     sim800l.delete_sms(index_id)
-                    sim800l.check_incoming()
                 else:
                     print("Nenhuma mensagem encontrada: ", msg)
                     time.sleep(2)
