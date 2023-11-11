@@ -4,6 +4,7 @@ from apiRequest import *
 from flask import Flask, jsonify, request
 import threading
 import time
+import re
 from removeAccents import replace_special_characters
 from queue import Queue
 
@@ -51,8 +52,11 @@ def message_check_loop():
     while True:
         result = sim800l.command('AT+CMGL="ALL",1\n')
         sim800l.check_incoming()
+        message_pattern = re.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
+        message = message_pattern.findall(result)
+        
         print("RESULT: ",result)
-        print("RESULT: ",result[0])
+        print("MESSAGE: ",message)
         print("=============================")
         time.sleep(1)
     """
