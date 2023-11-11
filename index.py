@@ -56,7 +56,7 @@ def message_check_loop():
         message = message_pattern.findall(result)
         
         print("RESULT: ",result)
-        print("MESSAGE: ",message[0])
+        print("MESSAGE: ",message[0][0])
         print("=============================")
         time.sleep(1)
     """
