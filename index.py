@@ -65,7 +65,6 @@ def message_check_loop():
                     sim800l.delete_sms(index_id)
                 else:
                     print("Nenhuma mensagem encontrada: ", msg)
-                    time.sleep(2)
                     if index_id > 2:
                         index_id = 0
             except IndexError as e:
