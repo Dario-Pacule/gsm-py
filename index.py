@@ -52,6 +52,7 @@ def message_check_loop():
         result = sim800l.command('AT+CMGL="ALL",1\n')
         sim800l.check_incoming()
         print("RESULT: ",result)
+        print("RESULT: ",result[0])
         print("=============================")
         time.sleep(1)
     """
