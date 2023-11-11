@@ -49,7 +49,7 @@ def send_sms_worker():
 def message_check_loop():
  # Lista todas as mensagens disponíveis
     while True:
-        result = sim800l.command('AT+CMGL="ALL"\n')
+        result = sim800l.command('AT+CMGL="ALL",1\n')
         sim800l.check_incoming()
         print("RESULT: ",result)
         print("=============================")
