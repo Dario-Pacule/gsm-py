@@ -48,39 +48,34 @@ def send_sms_worker():
 
 
 def message_check_loop():
- # Lista todas as mensagens disponíveis
-    while True:
-        result = sim800l.command('AT+CMGL="ALL",1\n')
-        sim800l.check_incoming()
-        message_pattern = re.compile(r'\+CMGL: (\d+),"(.*?)","(.*?)","(.*?)","(.*?)"')
-        message = message_pattern.findall(result)
-
-        print("RESULT: ",result)
-        print("MESSAGE: ",message[0][0])
-
-        index_id = message[0][0]
-        sim800l.delete_sms(index_id)
-
-        print("=============================")
-        time.sleep(1)
-    """
     index_id = 0
-        index_id += 1
-        msg = sim800l.read_sms(index_id)
-        sim800l.check_incoming()
+    try:
+        while True:
+            index_id += 1
+            try:
+                msg = sim800l.read_sms(index_id)
+                sim800l.check_incoming()
 
-        if msg:
-            print("Message: ", msg)
-            phoneNumber = msg[0]
-            messageContent = msg[3].replace('\n', '')
-            if(isValidMZPhoneNumber(phoneNumber)): post(phoneNumber, messageContent)
+                if msg:
+                    print("Message: ", msg)
+                    phoneNumber = msg[0]
+                    messageContent = msg[3].replace('\n', '')
+                    if isValidMZPhoneNumber(phoneNumber):
+                        post(phoneNumber, messageContent)
 
-            sim800l.delete_sms(index_id)
-            sim800l.check_incoming()
-        else:
-            print("Nenhuma menssagem encontrada: ", msg)
-            if(index_id>4): index_id = 0
-    """
+                    sim800l.delete_sms(index_id)
+                    sim800l.check_incoming()
+                else:
+                    print("Nenhuma mensagem encontrada: ", msg)
+                    if index_id > 4:
+                        index_id = 0
+            except IndexError as e:
+                print(f"Erro ao acessar a mensagem: {e}")
+            except Exception as e:
+                print(f"Erro desconhecido: {e}")
+    except KeyboardInterrupt:
+        print("Loop interrompido pelo usuário.")
+
 
 if sim800l.is_registered():
     print("SIM is registered.")
